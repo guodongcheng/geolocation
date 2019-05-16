@@ -1,0 +1,52 @@
+<<!DOCTYPE html>
+<html>
+<head>
+	<title>获取定位测试</title>
+</head>
+<body>
+	<div class="main">
+		<p>错误：<span class="a"></span></p>
+		<p>经度：<span class="b"></span></p>
+		<p>纬度：<span class="c"></span></p>
+	</div>
+	<script type="text/javascript" src="jquery-1.10.1.min.js"></script>
+	<script type="text/javascript">
+		function showPosition(position) { 
+	      console.log('22')
+	      console.log(position)
+	      $('.b').text(position.coords.latitude)
+	      $('.c').text(position.coords.longitude)
+			  // alert('纬度:'+lat+',经度:'+lng); 
+	    };
+	    function showError(error){ 
+	      console.log('33')
+	      console.log(error)
+	      console.log(JSON.stringify(error))
+	      var $a = $('.a')
+			switch(error.code) { 
+			case error.PERMISSION_DENIED: 
+				$a.text("定位失败,用户拒绝请求地理定位"); 
+				break; 
+			case error.POSITION_UNAVAILABLE: 
+				$a.text("定位失败,位置信息是不可用"); 
+				break; 
+			case error.TIMEOUT: 
+				$a.text("定位失败,请求获取用户位置超时"); 
+				break; 
+			case error.UNKNOWN_ERROR: 
+				$a.text("定位失败,定位系统失效"); 
+				break; 
+			} 
+	    };
+	    function getLocation(){ 
+			if (navigator.geolocation){ 
+        console.log('11')
+				navigator.geolocation.getCurrentPosition(showPosition, showError); 
+			}else{ 
+				$a.text("浏览器不支持地理定位。"); 
+			} 
+		} 
+		getLocation();
+	</script>
+</body>
+</html>>
