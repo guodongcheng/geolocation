@@ -48,6 +48,16 @@
 	    function onError(data) {
 	        document.getElementById('status').innerHTML='定位失败'
 	        document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+	        switch(data.message) {
+	        	case 'Geolocation permission denied': document.getElementById('result').innerHTML += '浏览器禁用了定位权限，请重新设置';break;
+
+	        	case 'Get ipLocation failed': 
+	        	case 'sdk定位失败': 
+	        	case 'Browser not Support html5 geolocation': 
+	        	case 'Get geolocation time out': 
+	        	case 'Get geolocation failed': document.getElementById('result').innerHTML += '定位失败';break;
+	        	default: document.getElementById('result').innerHTML += '定位失败';
+	        }
 	    }
 	</script>
 </body>
