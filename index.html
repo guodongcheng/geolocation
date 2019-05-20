@@ -58,6 +58,31 @@
 	        	case 'Get geolocation failed': document.getElementById('result').innerHTML += '定位失败';break;
 	        	default: document.getElementById('result').innerHTML += '定位失败';
 	        }
+
+	        AMap.plugin('AMap.CitySearch', function () {
+	        var citySearch = new AMap.CitySearch()
+	        citySearch.getLocalCity(function (status, result) {
+	        	alert(status)
+	          if (status === 'complete' && result.info === 'OK') {
+	            // console.log(result)
+
+	            // let currentCity = result && result.city || '';
+	            // let cityName = currentCity ? currentCity.replace('市', ''): '';
+	            // let addr = (result.province || '') + (result.city || '');
+	            // let lng = (result.bounds.southwest.lng + result.bounds.northeast.lng) / 2;
+	            // let lat = (result.bounds.southwest.lat + result.bounds.northeast.lat) / 2;
+
+	            // self.$store.commit('setCityName', cityName);
+	            // self.$store.commit('setAppLat', lat);
+	            // self.$store.commit('setAppLng', lng);
+	            // self.$store.commit('setAppCity', result.city);
+	            // self.$store.commit('setAppDist', '');
+	            // self.$store.commit('setAppAddress', addr);
+	            alert(JSON.stringify(result))
+	            // 查询成功，result即为当前所在城市信息
+	          }
+	        })
+	      })
 	    }
 	</script>
 </body>
