@@ -15,6 +15,7 @@
 		<!-- <input type="file" id="myfile" value="" name="myfile" multiple="multiple" /> -->
 		<button id="uploader">上传</button>
 		<!-- uni 的 SDK -->
+		<div id="showss"></div>
 		<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js"></script>
 		<script type="text/javascript" src="js/h5uploader.js"></script>
 		<script type="text/javascript">
@@ -32,6 +33,8 @@
 			   return null;
 			}
 console.log(window.location)
+var uploader = document.getElementById('uploader');
+uploader.innerText = JSON.stringify(window.location)
 			var access_token = getUrlParam('access_token');
 			var saasTenantToken = getUrlParam('saasTenantToken');
 			var urll = getUrlParam('url');
