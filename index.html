@@ -55,30 +55,32 @@ console.log(window.location)
 				});
 			}
 			uploader.addEventListener("click", function(e) {
-				H5Uploader.upload({
-					// 上传url
-					action: urll + '/accounts/file/upload',
-					id: 'myfile',
-					formData: {
-						'type': type
-					},
-					header: {
-						'Authorization': access_token ? `bearer ${access_token}` : null,
-						'saasTenantToken': saasTenantToken,
-					},
-					success: function(data) {
-						if(data) {
-							var res = JSON.parse(data)
-							if(res.recode == '000000') {
-								var mess = res.data;
-								mess.localPath = document.getElementById("myfile").value
-								sendMessage(mess)
-							}
-						}
-					},
-					fail: function(data) {
-					}
-				});
+				// H5Uploader.upload({
+				// 	// 上传url
+				// 	action: urll + '/accounts/file/upload',
+				// 	id: 'myfile',
+				// 	formData: {
+				// 		'type': type
+				// 	},
+				// 	header: {
+				// 		'Authorization': access_token ? `bearer ${access_token}` : null,
+				// 		'saasTenantToken': saasTenantToken,
+				// 	},
+				// 	success: function(data) {
+				// 		if(data) {
+				// 			var res = JSON.parse(data)
+				// 			if(res.recode == '000000') {
+				// 				var mess = res.data;
+				// 				mess.localPath = document.getElementById("myfile").value
+								sendMessage({
+									'aa': 123
+								})
+				// 			}
+				// 		}
+				// 	},
+				// 	fail: function(data) {
+				// 	}
+				// });
 			}, false);
 
 		</script>
