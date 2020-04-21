@@ -16,7 +16,7 @@
 		<button id="uploader">上传</button>
 		<!-- uni 的 SDK -->
 		<div id="showss"></div>
-		<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js"></script>
+		<!-- <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js"></script> -->
 		<script type="text/javascript" src="js/h5uploader.js"></script>
 		<script type="text/javascript">
 			function loadScript(src, callback) {
@@ -40,7 +40,7 @@
 			  head.appendChild(script);
 			}
 
-			loadScript('http://cdn.staticfile.org/jquery/1.6.2/jquery.min.js',function(){
+			loadScript('https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js',function(){
 			  console.log('onload');
 			  init();
 			});
