@@ -15,11 +15,11 @@
 		<!-- <input type="file" id="myfile" value="" name="myfile" multiple="multiple" /> -->
 		<button id="uploader">上传</button>
 		<!-- uni 的 SDK -->
-		<div id="showss"></div>
 		<script type="text/javascript" src="js/uni.js"></script>
 		<script type="text/javascript" src="js/h5uploader.js"></script>
 		<script type="text/javascript">
 			// 当前环境
+			console.log(uni)
 			uni.getEnv(function(res) {
 				console.log('当前环境：' + JSON.stringify(res));
 			});
@@ -33,8 +33,7 @@
 			   return null;
 			}
 console.log(window.location)
-var showss = document.getElementById('showss');
-showss.innerText = JSON.stringify(window.location)
+
 			var access_token = getUrlParam('access_token');
 			var saasTenantToken = getUrlParam('saasTenantToken');
 			var urll = getUrlParam('url');
