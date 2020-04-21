@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+		<title>H5附件上传</title>
+	</head>
+
+	<body>
+		<h1>H5附件上传</h1>
+		<input type="file" id="myfile" name="file" style="display:none" onchange="changeAgentContent()" />
+		<input type="text" value="" disabled id="myfileAgent" />
+		<input type="button" onclick="document.getElementById('myfile').click()" value="浏览..." />
+		<!-- <input type="file" id="myfile" value="" name="myfile" multiple="multiple" /> -->
+		<button id="uploader">上传</button>
+		<!-- uni 的 SDK -->
+		<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js"></script>
+		<script type="text/javascript" src="js/h5uploader.js"></script>
+		<script type="text/javascript">
+			// 当前环境
+			uni.getEnv(function(res) {
+				console.log('当前环境：' + JSON.stringify(res));
+			});
+			function getUrlParam(name) {
+			   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			   var r = window.location.search.substr(1).match(reg);
+			   if(r != null) {
+			　　　　//return unescape(r[2]);
+			       return r[2];
+			   }
+			   return null;
+			}
+
+			var access_token = getUrlParam('access_token');
+			var saasTenantToken = getUrlParam('saasTenantToken');
+			var urll = getUrlParam('url');
+			var type = getUrlParam('type') || '30';
+			function changeAgentContent(){
+			    document.getElementById("myfileAgent").value = document.getElementById("myfile").value;
+			}
+			var uploader = document.getElementById('uploader');
+			// 发送文件数据
+			function sendMessage(data) {
+				uni.postMessage({
+					data: {
+						action: data
+					}
+				});
+				uni.navigateBack({
+				    delta: 1
+				});
+			}
+			uploader.addEventListener("click", function(e) {
+				H5Uploader.upload({
+					// 上传url
+					action: urll + '/accounts/file/upload',
+					id: 'myfile',
+					formData: {
+						'type': type
+					},
+					header: {
+						'Authorization': access_token ? `bearer ${access_token}` : null,
+						'saasTenantToken': saasTenantToken,
+					},
+					success: function(data) {
+						if(data) {
+							var res = JSON.parse(data)
+							if(res.recode == '000000') {
+								var mess = res.data;
+								mess.localPath = document.getElementById("myfile").value
+								sendMessage(mess)
+							}
+						}
+					},
+					fail: function(data) {
+					}
+				});
+			}, false);
+
+		</script>
+	</body>
+
+</html>
