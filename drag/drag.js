@@ -180,8 +180,9 @@ class Drag {
 					this.handleMove(e, target);
 					break;
 				case 'zoomScale': 
+					this.handleScale(e, target);
 					this.handleZoom(e, target);
-					// this.handleScale(e, target);
+					// 
 					break;
 				default:;
 			}
@@ -206,32 +207,37 @@ class Drag {
 	}
 
 	handleZoom(e, target) {
-		let pointCenter = {
-			x: Math.floor((e.clientX + this.pointRightBottom.x) / 2),
-			y: Math.floor((e.clientY + this.pointRightBottom.y) /2)
+		console.log(this.angle)
+		this.pointCenterMiddle = {
+			x: Math.floor((e.clientX + this.pointLeftTop.x) / 2),
+			y: Math.floor((e.clientY + this.pointLeftTop.y) /2)
 		}
-		let newPointLeftTop = this.getRotatePoint({
+		let newPointRightBottom = this.getRotatePoint({
 			x: e.clientX,
 			y: e.clientY
-		}, pointCenter, -this.angle)
-		let newPointRightBottom = this.getRotatePoint(this.pointRightBottom, pointCenter, -this.angle)
+		}, this.pointCenterMiddle, -this.angle)
+		console.log(this.pointLeftTop)
+		let newPointLeftTop = this.getRotatePoint(this.pointLeftTop, this.pointCenterMiddle, -this.angle)
+		console.log(newPointLeftTop)
 		let newWidth = newPointRightBottom.x - newPointLeftTop.x
 		let newHeight = newPointRightBottom.y - newPointLeftTop.y
 
 		if(newWidth / newHeight > this.scale) {
-			newPointLeftTop.x = newPointLeftTop.x + Math.abs(newWidth - newHeight * this.scale)
+			newPointRightBottom.x = newPointRightBottom.x - Math.abs(newWidth - newHeight * this.scale)
 			newWidth = newHeight * this.scale
 		}else {
-			newPointLeftTop.y = newPointLeftTop.y + Math.abs(newHeight - newWidth / this.scale)
+			newPointRightBottom.y = newPointRightBottom.y - Math.abs(newHeight - newWidth / this.scale)
 			newHeight = newWidth / this.scale
 		}
-		let rotatePointLeftTop = this.getRotatePoint(newPointLeftTop, pointCenter, this.angle)
+		let rotatePointRightBottom = this.getRotatePoint(newPointRightBottom, this.pointCenterMiddle, this.angle)
 		this.pointCenterMiddle = {
-			x: Math.floor((rotatePointLeftTop.x + this.pointRightBottom.x) / 2),
-			y: Math.floor((rotatePointLeftTop.y + this.pointRightBottom.y) / 2)
+			x: Math.floor((rotatePointRightBottom.x + this.pointLeftTop.x) / 2),
+			y: Math.floor((rotatePointRightBottom.y + this.pointLeftTop.y) / 2)
 		}
-		newPointLeftTop = this.getRotatePoint(rotatePointLeftTop, this.pointCenterMiddle, -this.angle)
-		newPointRightBottom = this.getRotatePoint(this.pointRightBottom, this.pointCenterMiddle, -this.angle)
+		newPointLeftTop = this.getRotatePoint(this.pointLeftTop, this.pointCenterMiddle, -this.angle)
+		newPointRightBottom = this.getRotatePoint(rotatePointRightBottom, this.pointCenterMiddle, -this.angle)
+		console.log(newPointLeftTop)
+		// console.log(newPointRightBottom)
 		newWidth = newPointRightBottom.x - newPointLeftTop.x
 		newHeight = newPointRightBottom.y - newPointLeftTop.y
 		console.log(newWidth)
@@ -239,14 +245,14 @@ class Drag {
 		if(newWidth <= 12) {
 			newWidth = 12
 			newHeight = Math.floor(newWidth / this.scale)
-			newPointLeftTop.x = newPointRightBottom.x - newWidth
-			newPointLeftTop.y = newPointRightBottom.y - newHeight
+			newPointRightBottom.x = newPointLeftTop.x + newWidth
+			newPointRightBottom.y = newPointLeftTop.y + newHeight
 		}
 		if(newHeight <= 12) {
 			newHeight = 12
 			newWidth = Math.floor(newHeight * this.scale)
-			newPointLeftTop.x = newPointRightBottom.x - newWidth
-			newPointLeftTop.y = newPointRightBottom.y - newHeight
+			newPointRightBottom.x = newPointLeftTop.x + newWidth
+			newPointRightBottom.y = newPointLeftTop.y + newHeight
 		}
 		if(newWidth > 12 && newHeight > 12) {
 			this.left = newPointLeftTop.x
@@ -261,6 +267,10 @@ class Drag {
 			this.pannelDom.style.top = `${this.top}px`
 			this.pannelDom.style.width = `${this.width}px`
 			this.pannelDom.style.height = `${this.height}px`
+
+			let lineHeight = this.width > this.height ? this.width + 40 : this.height + 40
+			this.levelLine.style.height = `${lineHeight}px`
+			this.verticalLine.style.height = `${lineHeight}px`
 		}
 	}
 
@@ -324,7 +334,7 @@ class Drag {
 	getRotatePoint(curPos, centerPos, angle) {
 		return {
 			x: Math.floor((curPos.x - centerPos.x) * Math.cos(Math.PI / 180 * angle) - (curPos.y - centerPos.y) * Math.sin(Math.PI / 180 * angle) + centerPos.x),
-			y: Math.floor((curPos.x - centerPos.x) * Math.sin(Math.PI / 180 * angle) - (curPos.y - centerPos.y) * Math.cos(Math.PI / 180 * angle) + centerPos.y)
+			y: Math.floor((curPos.x - centerPos.x) * Math.sin(Math.PI / 180 * angle) + (curPos.y - centerPos.y) * Math.cos(Math.PI / 180 * angle) + centerPos.y)
 		}
 	}
 
